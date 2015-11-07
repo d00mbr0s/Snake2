@@ -5,12 +5,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Exempel {
     private Brick[][] brickArray;
     private int order = 0;
-    private Tree tree = new Tree();
     private ArrayList<ArrayList<Brick>> paths = new ArrayList<>();
     private ArrayList<Integer> pathsLengths = new ArrayList<>();
 
@@ -162,7 +160,6 @@ public class Exempel {
     }
 
     public void startSnake(Brick current) {
-        tree.setRoot(current);
         snake(current);
         printArray();
         current.printTree(current);
@@ -171,6 +168,16 @@ public class Exempel {
     public void snake(Brick current) {
         current.setIsVisited(true);
         current.setOrder(order++);
+       // current.getNeightburs().forEach((brick) ->{ if(!brick.isVisited()) snake(brick); current.addVisitedChild(brick); brick.setParent(current); });
+        for(Brick brick : current.getNeightburs()) {
+            if (!brick.isVisited()) {
+                snake(brick);
+                current.addVisitedChild(brick);
+                brick.setParent(current);
+            }
+        }
+
+
         for(Brick brick : current.getNeightburs()){
             if(!brick.isVisited()) {
                 snake(brick);
