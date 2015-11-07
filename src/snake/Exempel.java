@@ -13,6 +13,7 @@ public class Exempel {
     private Tree tree = new Tree();
     private ArrayList<ArrayList<Brick>> paths = new ArrayList<>();
     private ArrayList<Integer> pathsLengths = new ArrayList<>();
+    private SnakeUI ui;
 
     /**
      * Metod som h�mtar textfilen fr�n datorn
@@ -39,6 +40,7 @@ public class Exempel {
                 }
             }
             initializeVariables(splitted);
+
         }
         catch (FileNotFoundException e)
         {
@@ -87,6 +89,9 @@ public class Exempel {
             // �ka med 2 pga av varje hinder representeras av [x],[y]
             indexCounter += 2;
         }
+        ui = new SnakeUI(brickArray);
+        ui.buildUI(brickArray);
+
         printArray();
         System.out.println();
         System.out.println("---------------------------");
@@ -110,25 +115,56 @@ public class Exempel {
             }
             System.out.println();
         }
+        setLongestPath();
+    }
 
+    private void setLongestPath() {
+        for (int i = 0; i < brickArray.length; i++) {
+            for (int j = 0; j < brickArray[i].length; j++) {
+                brickArray[i][j].setIsVisited(false);
+            }
+        }
+
+        ArrayList<Brick> temp =paths.get(0);
+
+        for (int i = 0; i < paths.size(); i++) {
+            if (paths.get(i).size() > temp.size()) {
+                temp = paths.get(i);
+            }
+        }
+
+        for(Brick[] ba : brickArray) {
+            for (Brick b : ba) {
+                for (Brick c : temp) {
+                    if(b == c) {
+                        b.setIsVisited(true);
+                    }
+                }
+            }
+        }
+
+
+        ui.buildUI(brickArray);
+        ui.setPnlSouth(temp.size());
     }
 
     private void setNeightburs(){
         for(int x = 0; x < brickArray.length; x++) {
             for(int y = 0; y < brickArray[x].length; y++) {
                 ArrayList<Brick> neightbours = new ArrayList<>();
-                if(x+1 < brickArray.length &&  !brickArray[x+1][y].isObstacle()) {
-                    neightbours.add(brickArray[x+1][y]);
-                }
-                if(y+1 < brickArray[x].length &&  !brickArray[x][y+1].isObstacle()) {
-                    neightbours.add(brickArray[x][y+1]);
-                }
                 if(x-1 >= 0 &&  !brickArray[x-1][y].isObstacle()) {
                     neightbours.add(brickArray[x-1][y]);
                 }
                 if(y-1 >= 0 &&  !brickArray[x][y-1].isObstacle()) {
                     neightbours.add(brickArray[x][y-1]);
                 }
+                if(x+1 < brickArray.length &&  !brickArray[x+1][y].isObstacle()) {
+                    neightbours.add(brickArray[x+1][y]);
+                }
+                if(y+1 < brickArray[x].length &&  !brickArray[x][y+1].isObstacle()) {
+                    neightbours.add(brickArray[x][y+1]);
+                }
+
                 brickArray[x][y].setNeightburs(neightbours);
             }
 
@@ -169,14 +205,20 @@ public class Exempel {
     }
 
     public void snake(Brick current) {
-        current.setIsVisited(true);
-        current.setOrder(order++);
-        for(Brick brick : current.getNeightburs()){
-            if(!brick.isVisited()) {
-                snake(brick);
-                current.addVisitedChild(brick);
-                brick.setParent(current);
+        try {
+            current.setIsVisited(true);
+            current.setOrder(order++);
+            ui.buildUI(brickArray);
+            Thread.sleep(200);
+            for (Brick brick : current.getNeightburs()) {
+                if (!brick.isVisited()) {
+                    snake(brick);
+                    current.addVisitedChild(brick);
+                    brick.setParent(current);
+                }
             }
+        } catch (Exception e) {
+            System.out.println("NAAJ");
         }
     }
 
