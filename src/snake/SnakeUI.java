@@ -41,7 +41,7 @@ public class SnakeUI extends JPanel {
 
     public void setPnlSouth(int size) {
         pnlSouth.add(textPane);
-        textPane.setText("Longest path is "+size+" steps");
+        textPane.setText("Longest path it could find is "+size+" steps");
     }
 
     public void buildUI(Brick[][] brickArray) {
