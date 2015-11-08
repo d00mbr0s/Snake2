@@ -10,7 +10,6 @@ import java.util.Arrays;
 public class Exempel {
     private Brick[][] brickArray;
     private int order = 0;
-    private Tree tree = new Tree();
     private ArrayList<ArrayList<Brick>> paths = new ArrayList<>();
     private ArrayList<Integer> pathsLengths = new ArrayList<>();
     private SnakeUI ui;
@@ -59,10 +58,11 @@ public class Exempel {
      */
 
     private void initializeVariables(ArrayList<String> parsedText){
+        System.out.println("INPUT\n------------------");
         int nbrColums = Integer.parseInt(parsedText.get(0));
-        System.out.println(parsedText.get(0));
+        System.out.print(parsedText.get(0) + ",");
         int nbrRows = Integer.parseInt(parsedText.get(1));
-        System.out.println(parsedText.get(1));
+        System.out.print(parsedText.get(1) + ",");
         int nbrOfObstacles = Integer.parseInt(parsedText.get(2));
         System.out.println(parsedText.get(2));
 
@@ -90,22 +90,15 @@ public class Exempel {
             indexCounter += 2;
         }
         ui = new SnakeUI(brickArray);
-        ui.buildUI(brickArray);
 
-        printArray();
-        System.out.println();
-        System.out.println("---------------------------");
 
         setNeightburs();
         startSnake(brickArray[0][0]);
 
         findLongestPath();
+        ui.buildUI(brickArray);
 
-        System.out.println("---------------------------------------------------------------------");
-        System.out.println("---------------------------------------------------------------------");
-        System.out.println("---------------------------------------------------------------------");
-
-        for(Integer x : pathsLengths) {
+       /* for(Integer x : pathsLengths) {
             System.out.print(x + " ");
         }
         System.out.println();
@@ -114,8 +107,17 @@ public class Exempel {
                 System.out.print(b.getId() + "  ");
             }
             System.out.println();
-        }
+        }*/
         setLongestPath();
+
+
+
+    }
+
+    private void printPath(ArrayList<Brick> bricks) {
+        for(Brick brick : bricks) {
+            System.out.println(brick.getId());
+        }
     }
 
     private void setLongestPath() {
@@ -146,6 +148,9 @@ public class Exempel {
 
         ui.buildUI(brickArray);
         ui.setPnlSouth(temp.size());
+        System.out.println("\n\n\nOUTPUT\n------------------");
+        System.out.println(temp.size());
+        printPath(temp);
     }
 
     private void setNeightburs(){
@@ -198,18 +203,15 @@ public class Exempel {
     }
 
     public void startSnake(Brick current) {
-        tree.setRoot(current);
         snake(current);
-        printArray();
-        current.printTree(current);
+      //  printArray();
+      //  current.printTree(current);
     }
 
     public void snake(Brick current) {
         try {
             current.setIsVisited(true);
             current.setOrder(order++);
-            ui.buildUI(brickArray);
-            Thread.sleep(200);
             for (Brick brick : current.getNeightburs()) {
                 if (!brick.isVisited()) {
                     snake(brick);
@@ -234,7 +236,7 @@ public class Exempel {
             count++;
         }
         currentPath.add(0, temp);
-        System.out.println("hej");
+       // System.out.println("hej");
         return count;
     }
 

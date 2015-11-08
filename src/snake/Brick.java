@@ -115,10 +115,6 @@ public class Brick {
 
 
 
-
-
-
-
     public ArrayList<Brick> getVisitedChilds() {
         return visitedChilds;
     }
