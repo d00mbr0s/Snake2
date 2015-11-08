@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Exempel {
     private Brick[][] brickArray;
@@ -114,12 +113,19 @@ public class Exempel {
 
     }
 
+    /**
+     * Skriver ut vägen
+     * @param bricks vägen i bricks
+     */
     private void printPath(ArrayList<Brick> bricks) {
         for(Brick brick : bricks) {
             System.out.println(brick.getId());
         }
     }
 
+    /**
+     * Kollar vilken väg som var längst och updaterar det i UI
+     */
     private void setLongestPath() {
         for (int i = 0; i < brickArray.length; i++) {
             for (int j = 0; j < brickArray[i].length; j++) {
@@ -147,12 +153,15 @@ public class Exempel {
 
 
         ui.buildUI(brickArray);
-        ui.setPnlSouth(temp.size());
+        ui.setPnlSouth(temp.size(), paths.size());
         System.out.println("\n\n\nOUTPUT\n------------------");
         System.out.println(temp.size());
         printPath(temp);
     }
 
+    /**
+     * Kollar på grannarna i varje nod och lägger till de till nodens grannar
+     */
     private void setNeightburs(){
         for(int x = 0; x < brickArray.length; x++) {
             for(int y = 0; y < brickArray[x].length; y++) {
@@ -202,12 +211,20 @@ public class Exempel {
         }
     }
 
+    /**
+     * Startar algoritmen
+     * @param current startnoden
+     */
     public void startSnake(Brick current) {
         snake(current);
       //  printArray();
       //  current.printTree(current);
     }
 
+    /**
+     * Metoden går igenom varje nod rekursivt och om det finns grannar att gå till anropar den snake på varje laglig granne
+     * @param current startnoden
+     */
     public void snake(Brick current) {
         try {
             current.setIsVisited(true);
@@ -225,6 +242,11 @@ public class Exempel {
     }
 
 
+    /**
+     * Räknar ut längden/höjden på vägen och ordningen
+     * @param start startnoden
+     * @return hur lång den är
+     */
     private int calculateHeight(Brick start) {
         ArrayList<Brick> currentPath = new ArrayList<>();
         paths.add(currentPath);
@@ -240,6 +262,10 @@ public class Exempel {
         return count;
     }
 
+    /**
+     * Hittar den längsta vägen genom att loopa igenom brickArrayen, börjar längst in eftersom noden längst in
+     * inte har något visitedChild.
+     */
     private void findLongestPath() {
         for(int i = 0; i < brickArray.length; i++) {
             for(int j = 0; j < brickArray[i].length; j++) {

@@ -5,6 +5,10 @@ import java.util.ArrayList;
 /**
  * Created by Emil Erik on 2015-11-06.
  */
+
+/**
+ * Brick är en nod som har en referens till sin förälder samt till alla sina barn/neighbours
+ */
 public class Brick {
     private boolean isObstacle;
     private boolean isVisited;
@@ -13,7 +17,6 @@ public class Brick {
     private ArrayList<Brick> visitedChilds = new ArrayList<>();
     private int height = 0;
     private Brick parent;
-    private boolean isLast = false;
     private String id;
 
 
@@ -29,13 +32,6 @@ public class Brick {
         this.id = id;
     }
 
-    public boolean isLast() {
-        return isLast;
-    }
-
-    public void setIsLast(boolean isLast) {
-        this.isLast = isLast;
-    }
     public int getHeight() {
         return height;
     }
@@ -58,10 +54,6 @@ public class Brick {
         } else {
             return true;
         }
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
     }
 
     public ArrayList<Brick> getNeightburs() {
@@ -96,6 +88,7 @@ public class Brick {
     public void setIsVisited(boolean isVisited) {
         this.isVisited = isVisited;
     }
+
     public void setOrder(int order) {
         this.order = order;
     }
@@ -103,17 +96,6 @@ public class Brick {
     public int getOrder(){
         return order;
     }
-
-    public Brick returnNeightbour() {
-        for(Brick brick : neightburs) {
-            if(!brick.isVisited) {
-                return brick;
-            }
-        }
-        return null;
-    }
-
-
 
     public ArrayList<Brick> getVisitedChilds() {
         return visitedChilds;
@@ -138,10 +120,4 @@ public class Brick {
         this.parent = parent;
     }
 
-    public void printTree(Brick pre){
-            System.out.print(String.format("%15s", this.toString() + " came from " + pre.toString() + "     " ));
-        for(Brick b : visitedChilds) {
-            b.printTree(this);
-        }
     }
-}

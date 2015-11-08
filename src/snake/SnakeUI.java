@@ -34,9 +34,9 @@ public class SnakeUI extends JPanel {
      * Tar in den största vägen och skriver in det i en panel
      * @param size storleken på största vägen
      */
-    public void setPnlSouth(int size) {
+    public void setPnlSouth(int size, int pathsize) {
         pnlSouth.add(textPane);
-        textPane.setText("Longest path it could find is "+size+" steps");
+        textPane.setText("Longest path it could find is "+size+" steps from " + pathsize + " different paths");
     }
 
     /**
